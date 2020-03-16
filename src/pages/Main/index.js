@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { FaGithubAlt, FaPlus, FaSpinner } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import Container from '../../components/Container';
-import { Form, SubmitButton, List } from './styles';
+import { Form, SubmitButton, List, TextInput } from './styles';
 
 import api from '../../services/api';
 
@@ -13,6 +13,7 @@ export default class Main extends Component {
             newRepo: '',
             repositories: [],
             loading: false,
+            error: false,
         };
     }
 
@@ -37,27 +38,38 @@ export default class Main extends Component {
     };
 
     handleSubmit = async e => {
-        e.preventDefault();
+        try {
+            e.preventDefault();
 
-        this.setState({ loading: true });
+            this.setState({ loading: true });
 
-        const { newRepo, repositories } = this.state;
+            const { newRepo, repositories } = this.state;
 
-        const response = await api.get(`/repos/${newRepo}`);
+            const repositoryExists = repositories.find(r => r.name === newRepo);
 
-        const data = {
-            name: response.data.full_name,
-        };
+            if (repositoryExists) throw new Error('Repositório duplicado');
 
-        this.setState({
-            repositories: [...repositories, data],
-            newRepo: '',
-            loading: false,
-        });
+            const response = await api.get(`/repos/${newRepo}`);
+
+            const data = {
+                name: response.data.full_name,
+            };
+            this.setState({
+                repositories: [...repositories, data],
+                newRepo: '',
+                loading: false,
+                error: false,
+            });
+        } catch (ex) {
+            this.setState({
+                loading: false,
+                error: true,
+            });
+        }
     };
 
     render() {
-        const { newRepo, repositories, loading } = this.state;
+        const { newRepo, repositories, loading, error } = this.state;
 
         return (
             <Container>
@@ -67,11 +79,12 @@ export default class Main extends Component {
                 </h1>
 
                 <Form onSubmit={this.handleSubmit}>
-                    <input
+                    <TextInput
                         type="text"
                         placeholder="Adicionar repositório"
                         value={newRepo}
                         onChange={this.handleInputChange}
+                        error={error}
                     />
                     <SubmitButton loading={loading}>
                         {loading ? (
