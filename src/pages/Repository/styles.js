@@ -99,3 +99,39 @@ export const IssueList = styled.ul`
         }
     }
 `;
+
+export const FilterList = styled.ul`
+    flex: 1;
+    color: #444;
+`;
+
+export const Title = styled.h3`
+    margin-bottom: 10px;
+`;
+
+export const FilterTitle = styled.span`
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 6px;
+`;
+
+export const FilterOptions = styled.select`
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: url(http://www.webcis.com.br/images/imagens-noticias/select/ico-seta-appearance.gif)
+        no-repeat #eeeeee; /* Imagem de fundo (Seta) */
+    background-position: 218px center; /*Posição da imagem do background*/
+    width: 250px; /* Tamanho do select, maior que o tamanho da div "div-select" */
+    height: 30px; /* Altura do select, importante para que tenha a mesma altura em todo os navegadores */
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 8px;
+`;
+export const Pagination = styled.div`
+    button {
+        &[disabled] {
+            color: #ccc;
+            border: none;
+        }
+    }
+`;
