@@ -128,6 +128,9 @@ export const FilterOptions = styled.select`
     padding: 8px;
 `;
 export const Pagination = styled.div`
+    span {
+        margin: 10px;
+    }
     button {
         &[disabled] {
             color: #ccc;
